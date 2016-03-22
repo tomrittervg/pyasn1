@@ -7,6 +7,7 @@
 #
 import os
 import sys
+from Cython.Build import cythonize
 
 classifiers = """\
 Development Status :: 5 - Production/Stable
@@ -45,6 +46,7 @@ if sys.version_info[:2] < (2, 4):
 
 try:
     from setuptools import setup, Command
+    from distutils.extension import Extension
     params = {
         'zip_safe': True
     }    
@@ -74,7 +76,8 @@ params.update({
                   'pyasn1.codec',
                   'pyasn1.codec.ber',
                   'pyasn1.codec.cer',
-                  'pyasn1.codec.der' ]
+                  'pyasn1.codec.der' ],
+    'ext_modules' : cythonize([Extension("pyasn1.codec.ber.decoder", ['pyasn1/codec/ber/decoder.pyx'])])
 })
 
 # handle unittest discovery feature

@@ -1,5 +1,6 @@
 *.pyc
 __pycache__
+pyasn1/codec/ber/decoder.c
 
 # vim swapfiles
 *.sw?
