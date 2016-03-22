@@ -120,6 +120,12 @@ class BitStringDecoder(AbstractSimpleDecoder):
     def valueDecoder(self, fullSubstrate, substrate, asn1Spec, tagSet, length,
                      state, decodeFun, substrateFun):
         head, tail = substrate[:length], substrate[length:]
+        cdef int trailingBits = 0
+        cdef int lsb = 0
+        cdef int p = 0
+        cdef int l = 0
+        cdef int j
+        cdef int o
         if tagSet[0][1] == tag.tagFormatSimple:    # XXX what tag to check?
             if not head:
                 raise error.PyAsn1Error('Empty substrate')
@@ -129,7 +135,10 @@ class BitStringDecoder(AbstractSimpleDecoder):
                     'Trailing bits overflow %s' % trailingBits
                     )
             head = head[1:]
-            lsb = p = 0; l = len(head)-1; b = []
+            lsb = 0
+            p = 0
+            l = len(head)-1
+            b = []
             while p <= l:
                 if p == l:
                     lsb = trailingBits
