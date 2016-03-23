@@ -77,7 +77,10 @@ params.update({
                   'pyasn1.codec.ber',
                   'pyasn1.codec.cer',
                   'pyasn1.codec.der' ],
-    'ext_modules' : cythonize([Extension("pyasn1.codec.ber.decoder", ['pyasn1/codec/ber/decoder.pyx'])])
+    'ext_modules' : cythonize(
+        [Extension("pyasn1.codec.ber.decoder", ['pyasn1/codec/ber/decoder.pyx']),
+         Extension("pyasn1.type.namedtype", ['pyasn1/type/namedtype.pyx'])
+     ])
 })
 
 # handle unittest discovery feature
