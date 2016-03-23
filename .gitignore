@@ -2,6 +2,8 @@
 __pycache__
 pyasn1/codec/ber/decoder.c
 pyasn1/type/namedtype.c
+pyasn1/type/tagmap.c
+pyasn1/type/univ.c
 
 # vim swapfiles
 *.sw?

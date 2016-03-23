@@ -80,7 +80,8 @@ params.update({
     'ext_modules' : cythonize(
         [Extension("pyasn1.codec.ber.decoder", ['pyasn1/codec/ber/decoder.pyx']),
          Extension("pyasn1.type.namedtype", ['pyasn1/type/namedtype.pyx']),
-         Extension("pyasn1.type.tagmap", ["pyasn1/type/tagmap.pyx"])
+         Extension("pyasn1.type.tagmap", ["pyasn1/type/tagmap.pyx"]),
+         Extension("pyasn1.type.univ", ["pyasn1/type/univ.pyx"])
      ])
 })
 
