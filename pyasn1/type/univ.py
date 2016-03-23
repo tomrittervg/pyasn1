@@ -4,6 +4,7 @@
 # Copyright (c) 2005-2015, Ilya Etingof <ilya@glas.net>
 # License: http://pyasn1.sf.net/license.html
 #
+import bitarray
 import operator, sys, math
 from pyasn1.type import base, tag, constraint, namedtype, namedval, tagmap
 from pyasn1.codec.ber import eoo
@@ -266,6 +267,8 @@ class BitString(base.AbstractSimpleAsn1Item):
                         r.extend([0]*(j-len(r)+1))
                     r[j] = 1
                 return tuple(r)
+        elif isinstance(value, bitarray.bitarray):
+            return value.copy()
         elif isinstance(value, (tuple, list)):
             r = tuple(value)
             for b in r:

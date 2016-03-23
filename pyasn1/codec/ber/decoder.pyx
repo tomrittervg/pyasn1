@@ -4,6 +4,7 @@
 # Copyright (c) 2005-2016, Ilya Etingof <ilya@glas.net>
 # License: http://pyasn1.sf.net/license.html
 #
+import bitarray
 from pyasn1.type import base, tag, univ, char, useful, tagmap
 from pyasn1.codec.ber import eoo
 from pyasn1.compat.octets import str2octs, oct2int, isOctetsType
@@ -126,7 +127,6 @@ class BitStringDecoder(AbstractSimpleDecoder):
         cdef int l = 0
         cdef int j
         cdef int o
-        cdef list b
         if tagSet[0][1] == tag.tagFormatSimple:    # XXX what tag to check?
             if not head:
                 raise error.PyAsn1Error('Empty substrate')
@@ -139,26 +139,15 @@ class BitStringDecoder(AbstractSimpleDecoder):
             lsb = 0
             p = 0
             l = len(head)-1
-            b = []
-            while p <= l:
-                o = oct2int(head[p])
-                if p == l:
-                    lsb = trailingBits
-                    j = 7
-                    while j >= lsb:
-                        b.append((o>>j)&0x01)
-                        j -= 1
-                else:
-                    b.append(o & 0x80)
-                    b.append(o & 0x40)
-                    b.append(o & 0x20)
-                    b.append(o & 0x10)
-                    b.append(o & 0x08)
-                    b.append(o & 0x04)
-                    b.append(o & 0x02)
-                    b.append(o & 0x01)
-                p += 1
-            return self._createComponent(asn1Spec, tagSet, b), tail
+            ba = bitarray.bitarray()
+            ba.frombytes(head[:len(head)-1])
+            o = oct2int(head[len(head)-1])
+            lsb = trailingBits
+            j = 7
+            while j >= lsb:
+                ba.append((o>>j)&0x01)
+                j -= 1
+            return self._createComponent(asn1Spec, tagSet, ba), tail
         r = self._createComponent(asn1Spec, tagSet, ())
         if substrateFun:
             return substrateFun(r, substrate, length)
