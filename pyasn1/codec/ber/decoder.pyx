@@ -141,13 +141,22 @@ class BitStringDecoder(AbstractSimpleDecoder):
             l = len(head)-1
             b = []
             while p <= l:
+                o = oct2int(head[p])
                 if p == l:
                     lsb = trailingBits
-                j = 7
-                o = oct2int(head[p])
-                while j >= lsb:
-                    b.append((o>>j)&0x01)
-                    j -= 1
+                    j = 7
+                    while j >= lsb:
+                        b.append((o>>j)&0x01)
+                        j -= 1
+                else:
+                    b.append(o & 0x80)
+                    b.append(o & 0x40)
+                    b.append(o & 0x20)
+                    b.append(o & 0x10)
+                    b.append(o & 0x08)
+                    b.append(o & 0x04)
+                    b.append(o & 0x02)
+                    b.append(o & 0x01)
                 p += 1
             return self._createComponent(asn1Spec, tagSet, b), tail
         r = self._createComponent(asn1Spec, tagSet, ())
