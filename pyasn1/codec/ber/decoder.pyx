@@ -126,6 +126,7 @@ class BitStringDecoder(AbstractSimpleDecoder):
         cdef int l = 0
         cdef int j
         cdef int o
+        cdef list b
         if tagSet[0][1] == tag.tagFormatSimple:    # XXX what tag to check?
             if not head:
                 raise error.PyAsn1Error('Empty substrate')
